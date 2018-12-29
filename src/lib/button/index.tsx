@@ -17,9 +17,16 @@ export class Button extends WebElement {
 		console.log(Date.now(), 'Before render');
 	}
 
-	public render() {
+	public render(ctx: any) {
 		console.log(Date.now(), 'Render');
-		return `<button class="${this.classes.wrapper}">Hello world!</button>`;
+		return (
+			<button
+				className={this.classes.wrapper}
+				onClick={console.log}
+			>
+				<slot />
+			</button>
+		);
 	}
 
 	public afterRender() {

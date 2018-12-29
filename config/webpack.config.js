@@ -45,9 +45,9 @@ module.exports = (options) => ({
 		new webpack.HashedModuleIdsPlugin(),
 		new webpack.DefinePlugin({
 			'process.env': {
-				NODE_ENV: JSON.stringify('production'),
+				NODE_ENV: JSON.stringify('development'),
 			},
-			PRODUCTION: JSON.stringify(true),
+			PRODUCTION: JSON.stringify(false),
 		}),
 		new CheckerPlugin(),
 	],

@@ -4,7 +4,7 @@ const { resolve } = require('path');
 
 webpack(config({
 	entry: {
-		button: resolve(__dirname, '../src/lib/button/index.ts'),
+		button: resolve(__dirname, '../src/lib/button/index.tsx'),
 	},
 }), (err, stats) => {
 	if (err) {

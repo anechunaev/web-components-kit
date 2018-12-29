@@ -39,8 +39,15 @@ export default (options: IOptions) => (ClassConstructor: {new (...args: any[]): 
 
 			rendered = `${rendered}<style>${styleSheets.toString()}</style>`;
 		}
-		rendered = rendered + this.render();
+		const renderResult = this.render(this.$$h);
+		if (typeof renderResult === 'string') {
+			rendered += renderResult;
+		}
 		template.innerHTML = rendered;
+
+		if (renderResult.outerHTML) {
+			template.content.appendChild(renderResult);
+		}
 
 		const clone = document.importNode(template.content, true);
 
@@ -61,6 +68,8 @@ export default (options: IOptions) => (ClassConstructor: {new (...args: any[]): 
 		if (typeof this.beforeUnload === 'function') {
 			this.beforeUnload();
 		}
+
+		this.$$h.cleanup();
 
 		if (typeof this.unload === 'function') {
 			this.unload();
