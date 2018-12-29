@@ -1,17 +1,25 @@
 import Component from '../../modules/component';
+import WebElement from '../../modules/element';
+import styles from './style';
 
 @Component({
 	tag: 'test-button',
-	style: 'button { background: #36C; border: 0; border-radius: 5px; padding: 10px 15px; color: #fff; }',
+	dynamicStyles: styles,
+	theme: {
+		color: {
+			blue: '#0073FF',
+			red: '#FF4169',
+		},
+	},
 })
-class Button extends HTMLElement {
+export class Button extends WebElement {
 	public beforeRender() {
 		console.log(Date.now(), 'Before render');
 	}
 
 	public render() {
 		console.log(Date.now(), 'Render');
-		return '<button>Hello world!</button>';
+		return `<button class="${this.classes.wrapper}">Hello world!</button>`;
 	}
 
 	public afterRender() {

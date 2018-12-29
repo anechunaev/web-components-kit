@@ -2,21 +2,8 @@ export interface IOptions {
 	tag: string;
 	style?: string;
 	shadow?: boolean;
-}
-
-export interface IComponent {
-	new (...args: any[]): any;
-
-	beforeRender?(): void;
-	render(): string;
-	afterRender?(): void;
-
-	beforeUnload?(): void;
-	unload?(): void;
-
-	beforeUpdate?(): void;
-	update?(): void;
-	afterUpdate?(): void;
+	dynamicStyles?: (theme: any) => {[key: string]: any} | {[key: string]: any};
+	theme?: any;
 }
 
 const noop = () => {};
@@ -40,11 +27,20 @@ export default (options: IOptions) => (ClassConstructor: {new (...args: any[]): 
 			this.beforeRender();
 		}
 
-		const rendered = this.render();
-		template.innerHTML = rendered;
-		if (options.style) {
-			template.innerHTML = `<style>${options.style}</style>${rendered}`;
+		let rendered = '';
+		if (typeof options.style !== 'undefined') {
+			rendered = `<style>${options.style}</style>${rendered}`;
 		}
+		if (typeof options.dynamicStyles !== 'undefined') {
+			const dynamicStyles = typeof options.dynamicStyles === 'function' ? options.dynamicStyles(options.theme) : options.dynamicStyles;
+			const styleSheets = this.$$jss.createStyleSheet(dynamicStyles);
+
+			this.classes = styleSheets.classes;
+
+			rendered = `${rendered}<style>${styleSheets.toString()}</style>`;
+		}
+		rendered = rendered + this.render();
+		template.innerHTML = rendered;
 
 		const clone = document.importNode(template.content, true);
 
