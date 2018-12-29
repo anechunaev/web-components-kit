@@ -51,7 +51,7 @@ module.exports = (options) => ({
 		}),
 		new CheckerPlugin(),
 	],
-	optimization: {
+	/* optimization: {
 		minimizer: [
 			new Minifier({
 				terserOptions: {
@@ -59,5 +59,5 @@ module.exports = (options) => ({
 				}
 			}),
 		],
-	},
+	}, */
 });
