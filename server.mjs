@@ -6,7 +6,12 @@ const PORT = process.env.PORT || 8080;
 const HOST = process.env.HOST || '0.0.0.0';
 
 createServer(function (request, response) {
-	const filePath = request.url === '/' ? './static/index.html' : './static' + request.url;
+	let filePath = request.url === '/' ? './static/index.html' : './static' + request.url;
+
+	if (request.url.split('/')[1] === 'dist') {
+		filePath = '.' + request.url;
+	}
+
 	const extension = extname(filePath);
 	let contentType = 'text/html';
 
